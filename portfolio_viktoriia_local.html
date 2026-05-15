@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viktoriia — Portfolio Florystyczne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #2D4A3E; --green-mid: #4A7C6F; --green-light: #A8C5BC;
+    --cream: #F5F0E8; --cream-dark: #EDE6D6;
+    --gold: #C9A96E; --gold-light: #E2C99A;
+    --text: #1C2B27; --text-light: #6B7F78;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--text); font-family: 'Jost', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(245,240,232,0.93); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--green-light);
+  }
+  .nav-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--green); letter-spacing: 0.08em; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-light); transition: color 0.3s; }
+  .nav-links a:hover { color: var(--green); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 72px; }
+  .hero-left {
+    background: var(--green); display: flex; flex-direction: column;
+    justify-content: center; padding: 6rem 5rem; position: relative; overflow: hidden;
+  }
+  .hero-left::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: rgba(201,169,110,0.12);
+  }
+  .hero-tag { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+  .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+  .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem,7vw,6rem); font-weight: 300; line-height: 1; color: #fff; margin-bottom: 0.3rem; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.2rem,2.5vw,1.8rem); font-weight: 300; font-style: italic; color: var(--gold-light); margin-bottom: 2.5rem; }
+  .hero-desc { font-size: 0.88rem; line-height: 1.8; color: var(--green-light); max-width: 380px; margin-bottom: 3rem; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 0.6rem; border: 1px solid rgba(168,197,188,0.4); padding: 0.6rem 1.2rem; border-radius: 100px; font-size: 0.72rem; letter-spacing: 0.12em; color: var(--green-light); }
+  .hero-right { position: relative; overflow: hidden; }
+  .hero-right img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; animation: zoomIn 8s ease-out forwards; }
+  @keyframes zoomIn { from { transform: scale(1.08); } to { transform: scale(1); } }
+  .hero-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(to top, rgba(45,74,62,0.5), transparent); }
+
+  /* SECTIONS */
+  section { padding: 7rem 4rem; }
+  .section-label { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.8rem; }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3.2rem); font-weight: 300; color: var(--green); margin-bottom: 1.5rem; line-height: 1.1; }
+  .section-line { width: 60px; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 3rem; }
+
+  /* ABOUT */
+  .about { background: var(--cream-dark); display: grid; grid-template-columns: 1.2fr 1fr; gap: 6rem; align-items: center; }
+  .about-text p { font-size: 0.95rem; line-height: 1.9; color: var(--text-light); margin-bottom: 1.2rem; }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .skill-item { background: var(--cream); border: 1px solid var(--green-light); border-left: 3px solid var(--gold); padding: 0.9rem 1.1rem; border-radius: 2px; font-size: 0.82rem; color: var(--text); }
+
+  /* GALLERY */
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .gallery-item { position: relative; overflow: hidden; border-radius: 4px; cursor: pointer; }
+  .gallery-item.tall { grid-row: span 2; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); aspect-ratio: 3/4; }
+  .gallery-item.tall img { aspect-ratio: unset; height: 100%; }
+  .gallery-item:hover img { transform: scale(1.06); }
+  .gallery-item-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem 1.2rem 1.2rem; background: linear-gradient(to top, rgba(28,43,39,0.85), transparent); transform: translateY(100%); transition: transform 0.4s ease; }
+  .gallery-item:hover .gallery-item-overlay { transform: translateY(0); }
+  .gallery-item-caption { font-size: 0.8rem; color: #fff; letter-spacing: 0.06em; line-height: 1.4; }
+
+  /* DECO */
+  .seasonal { background: var(--green); color: #fff; }
+  .seasonal .section-title { color: #fff; }
+  .seasonal .section-label { color: var(--gold); }
+  .seasonal .section-line { background: linear-gradient(90deg, var(--gold), transparent); }
+  .seasonal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .seasonal-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(168,197,188,0.2); border-radius: 4px; overflow: hidden; transition: transform 0.3s, border-color 0.3s; }
+  .seasonal-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .seasonal-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+  .seasonal-card-body { padding: 1.2rem; }
+  .seasonal-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--gold-light); margin-bottom: 0.4rem; }
+  .seasonal-card-desc { font-size: 0.78rem; color: var(--green-light); line-height: 1.6; }
+
+  /* ETERNAL */
+  .eternal { background: var(--cream-dark); }
+  .eternal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: start; }
+  .eternal-item { overflow: hidden; border-radius: 4px; cursor: pointer; }
+  .eternal-item img { width: 100%; border-radius: 4px; display: block; object-fit: cover; aspect-ratio: 2/3; transition: transform 0.5s ease; }
+  .eternal-item:hover img { transform: scale(1.03); }
+  .eternal-caption { padding: 0.8rem 0.4rem; font-size: 0.8rem; color: var(--text-light); font-style: italic; text-align: center; }
+  .eternal-note { grid-column: span 3; text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; color: var(--green-mid); padding: 1rem 0; }
+
+  /* FOOTER */
+  footer { background: var(--green); color: rgba(255,255,255,0.5); text-align: center; padding: 3rem 4rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+  .footer-name { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #fff; margin-bottom: 0.4rem; font-weight: 300; }
+  .footer-sub { color: var(--gold-light); margin-bottom: 1.5rem; font-size: 0.85rem; }
+  .footer-line { width: 40px; height: 1px; background: var(--gold); margin: 1.5rem auto; }
+
+  /* ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* LIGHTBOX */
+  .lightbox { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(28,43,39,0.95); align-items: center; justify-content: center; padding: 2rem; }
+  .lightbox.active { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 4px; }
+  .lightbox-close { position: absolute; top: 1.5rem; right: 2rem; color: #fff; font-size: 2rem; cursor: pointer; background: none; border: none; line-height: 1; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { height: 50vw; }
+    .about { grid-template-columns: 1fr; gap: 3rem; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .seasonal-grid { grid-template-columns: 1fr 1fr; }
+    .eternal-grid { grid-template-columns: 1fr 1fr; }
+    .eternal-note { grid-column: span 2; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-name">Viktoriia</span>
+  <ul class="nav-links">
+    <li><a href="#about">O mnie</a></li>
+    <li><a href="#fresh">Bukiety</a></li>
+    <li><a href="#deco">Dekoracje</a></li>
+    <li><a href="#eternal">Wieczne</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Portfolio florystyczne</div>
+    <h1 class="hero-name">Viktoriia</h1>
+    <p class="hero-title">Florist &amp; Kompozytor kwiatowy</p>
+    <p class="hero-desc">Tworze bukiety ze swiezych kwiatow, kompozycje okolicznosciowe i dekoracje z pasja do kazdego detalu — od doboru kwiatow, przez kolorystyke, po eleganckie opakowanie.</p>
+    <div class="hero-badge">&#10022; &nbsp; TEB Edukacja — Florystyka &nbsp;·&nbsp; Wroclaw</div>
+  </div>
+  <div class="hero-right">
+    <img src="/photo/swieze/IMG_8200 (1).PNG" alt="Bukiet roz">
+    <div class="hero-overlay"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about fade-up" id="about">
+  <div class="about-text">
+    <div class="section-label">O mnie</div>
+    <h2 class="section-title">Florystyka<br><em>to moja pasja</em></h2>
+    <div class="section-line"></div>
+    <p>Jestem florystka z miloscia do kwiatow i tworzenia wyjatkowych kompozycji. Ukonczyłam kurs florystyczny w Policealnej Szkole TEB Edukacja we Wroclawiu.</p>
+    <p>Kazdy bukiet traktuje jak dzielo — dobieram kwiaty, kolory i opakowanie tak, zeby calosc opowiadala pewna historie.</p>
+  </div>
+  <div>
+    <div class="section-label">Umiejetnosci</div>
+    <div class="skills-grid">
+      <div class="skill-item">Bukiety okolicznosciowe</div>
+      <div class="skill-item">Kompozycje slubne</div>
+      <div class="skill-item">Dekoracje swiateczne</div>
+      <div class="skill-item">Kwiaty wieczne</div>
+      <div class="skill-item">Wianki i wience</div>
+      <div class="skill-item">Pakowanie i prezentacja</div>
+    </div>
+  </div>
+</section>
+
+<!-- FRESH -->
+<section id="fresh">
+  <div class="gallery-header fade-up">
+    <div class="section-label">Moje prace</div>
+    <h2 class="section-title">Bukiety swieze</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item tall fade-up" onclick="openLightbox(this)">
+      <img src="photo/swieze/IMG_8201 (1).PNG" alt="Tulipany">
+      <div class="gallery-item-overlay"><p class="gallery-item-caption">Bukiet tulipanow — elegancja w bieli</p></div>
+    </div>
+    <div class="gallery-item fade-up" onclick="openLightbox(this)">
+      <img src="photo/swieze/IMG_8199 (1).PNG" alt="Rozowy mix">
+      <div class="gallery-item-overlay"><p class="gallery-item-caption">Kompozycja wiosenno-letnia</p></div>
+    </div>
+    <div class="gallery-item fade-up" onclick="openLightbox(this)">
+      <img src="photo/swieze/IMG_8202 (1).PNG" alt="Hortensja">
+      <div class="gallery-item-overlay"><p class="gallery-item-caption">Hortensja z lisianthusem</p></div>
+    </div>
+    <div class="gallery-item fade-up" onclick="openLightbox(this)">
+      <img src="photo/swieze/IMG_6072 (1).JPG" alt="Suchokwiaty">
+      <div class="gallery-item-overlay"><p class="gallery-item-caption">Bukiet z suchymi kwiatami</p></div>
+    </div>
+    <div class="gallery-item tall fade-up" onclick="openLightbox(this)">
+      <img src="photo/swieze/IMG_0092 (1).JPG" alt="Bordowe roze">
+      <div class="gallery-item-overlay"><p class="gallery-item-caption">Bordowe roze z zielenia</p></div>
+    </div>
+    <div class="gallery-item fade-up" onclick="openLightbox(this)">
+      <img src="photo/swieze/IMG_6071 (1).JPG" alt="Bialy mix">
+      <div class="gallery-item-overlay"><p class="gallery-item-caption">Mieszany bukiet bialo-fioletowy</p></div>
+    </div>
+    <div class="gallery-item fade-up" onclick="openLightbox(this)">
+      <img src="photo/swieze/IMG_8200 (1).PNG" alt="Bialy mix">
+      <div class="gallery-item-overlay"><p class="gallery-item-caption">Bukiet roz</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DECO -->
+<section class="seasonal fade-up" id="deco">
+  <div class="gallery-header">
+    <div class="section-label">Dekoracje</div>
+    <h2 class="section-title">Kompozycje &amp; Wience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="seasonal-grid">
+    <div class="seasonal-card">
+      <img src="photo/dekoracje/IMG_6068.JPG" alt="Wieniec">
+      <div class="seasonal-card-body">
+        <div class="seasonal-card-title">Wieniec dekoracyjny</div>
+        <div class="seasonal-card-desc">Len i solidago — naturalna elegancja na kazda okazje</div>
+      </div>
+    </div>
+    <div class="seasonal-card">
+      <img src="photo/dekoracje/IMG_8203.PNG" alt="Roze">
+      <div class="seasonal-card-body">
+        <div class="seasonal-card-title">Kompozycja świąteczna</div>
+        <div class="seasonal-card-desc">Jodla, szyszki, bawelna i jagody — klimat Bozego Narodzenia</div>
+      </div>
+    </div>
+    <!-- <div class="seasonal-card">
+      <img src="photo/dekoracje/IMG_8203.PNG" alt="Kompozycja swiateczna">
+      <div class="seasonal-card-body">
+        <div class="seasonal-card-title">Kompozycja swiateczna</div>
+        <div class="seasonal-card-desc">Jodla, szyszki, bawelna i jagody — klimat Bozego Narodzenia</div>
+      </div>
+    </div> -->
+  </div>
+</section>
+
+<!-- ETERNAL -->
+<section class="eternal fade-up" id="eternal">
+  <div class="gallery-header">
+    <div class="section-label">Kwiaty wieczne</div>
+    <h2 class="section-title">Bukiety z drutu</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="eternal-grid">
+    <div class="eternal-item" onclick="openLightbox(this)">
+      <img src="photo/zdrutu/IMG_6550 1.png" alt="Niebieski mak">
+      <div class="eternal-caption">Kompozycja artystyczna z drutu kreatywnego</div>
+    </div>
+    <div class="eternal-item" onclick="openLightbox(this)">
+      <img src="photo/zdrutu/IMG_6664 2.png" alt="Rozowa lilia">
+      <div class="eternal-caption">Kompozycja artystyczna z drutu kreatywnego</div>
+    </div>
+    <div class="eternal-item" onclick="openLightbox(this)">
+      <img src="photo/zdrutu/IMG_6540 1.png" alt="Kompozycja">
+      <div class="eternal-caption">Kompozycja artystyczna z drutu kreatywnego</div>
+    </div>
+    <div class="eternal-item" onclick="openLightbox(this)">
+      <img src="photo/zdrutu/IMG_6839.WEBP" alt="Kompozycja">
+      <div class="eternal-caption">Kompozycja artystyczna z drutu kreatywnego</div>
+    </div>
+    <div class="eternal-item" onclick="openLightbox(this)">
+      <img src="photo/zdrutu/IMG_8185.PNG" alt="Kompozycja">
+      <div class="eternal-caption">Kompozycja artystyczna z drutu kreatywnego</div>
+    </div>
+    <div class="eternal-note">Kwiaty, ktore nigdy nie wiedna &#10022;</div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">Viktoriia</div>
+  <div class="footer-sub">Florist · Wrocław, Polska · 2025</div>
+  <div class="footer-line"></div>
+  <p>Policealna Szkoła TEB Edukacja — Florystyka</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  function openLightbox(el) {
+    const src = el.querySelector('img').src;
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
